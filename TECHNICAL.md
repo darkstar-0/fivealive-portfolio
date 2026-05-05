@@ -6,7 +6,7 @@ This document covers the engineering decisions behind FiveAlive and the developm
 
 ## The Problem
 
-High jump is one of the more logistically complex field events to manage. Unlike running events, athletes don't all compete at the same time — they rotate through a jumping order, can pass on a height, can check out temporarily, can enter the competition at different starting heights, and can be eliminated at any point. Meets can have 40+ athletes competing at a single pit, with one official responsible for tracking jump order, recording attempts, managing a waitlist, and maintaining the current bar height — all in real time under time pressure.
+High jump is one of the more logistically complex field events to manage. Unlike running events, athletes don't all compete at the same time — they rotate through a jumping order, can pass on a height, can check out temporarily, can enter the competition at different starting heights, and can be eliminated at any point. Meets can have 20–30 athletes per gender competing simultaneously at a single pit, with one official responsible for tracking jump order, recording attempts, managing a waitlist, and maintaining the current bar height — all in real time under time pressure.
 
 Most officials still do this on paper or improvise with spreadsheets. FiveAlive was built to replace that with a purpose-built queue manager.
 
@@ -109,4 +109,4 @@ Each of these went through the same cycle: discuss the intended behavior with th
 
 - **Write test criteria first.** The Cypress suite came late — after the behaviors were already implemented and partially broken. Agreeing on concrete acceptance criteria before writing code would have caught several of the queue logic bugs earlier.
 - **Separate state from rendering earlier.** The `render*()` functions grew large as features were added. A cleaner separation between state mutation and render scheduling would make the code easier to reason about.
-- **Cross-device sync from the start.** The `localStorage`-based live scoreboard works well for a single-device setup but requires a workaround (second tab) that surprised some users. A lightweight WebSocket sync layer would be the right architecture for a tool used in a venue setting.
+- **Design the live sync data contract earlier.** The main app's `saveState()` intentionally omits transient competition fields from localStorage, which was the right call for crash recovery — but it meant `pushLiveState()` had to be built as a separate serialization path that re-reads from the live `EVENTS` object. If the live sync requirement had been on the table from the start, the state model would have been shaped differently from the beginning rather than retrofitted.
