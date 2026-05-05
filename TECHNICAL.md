@@ -44,7 +44,14 @@ All competition state is serialized to `localStorage` under a single key and res
 
 ### Public Live Scoreboard
 
-`live.html` is a read-only scoreboard page that reads from `localStorage` and auto-refreshes every 3 seconds. It shows the current height, the NOW indicator, the jump queue with positional labels, and attempt bubbles. It's designed to run in a second browser tab on the same device, displayed on a monitor or TV facing the athletes. Real-time cross-device sync would require a WebSocket or server-side state push, which is a future consideration.
+`live.html` is a read-only public view that syncs in real time via Supabase. When an official starts a competition, the app pushes state to a `live_state` table on every recorded result; `live.html` fetches the initial state and subscribes to Postgres change events for instant updates. Anyone with the 6-character meet code — coaches, athletes, spectators on their own devices — can open the URL and follow along without any login.
+
+The page has two tabs serving different audiences:
+
+- **Queue view** — the jump order with positional labels (UP / DECK / HOLE / HOLD), the current jumper's NOW card with attempt slots, and the waitlist. Designed for coaches and athletes who need to know who's up and who's next.
+- **Scoreboard view** — a ranked results table showing every athlete's best height, attempt history across all heights jumped so far, total misses, and current place. Top-3 places are gold/silver/bronze highlighted. Athletes still in the competition show a pulsing indicator. The current bar height column is subtly highlighted. Designed for spectators who want to know who's winning and how athletes have performed.
+
+One non-obvious architectural detail: the main app's `saveState()` function intentionally omits transient fields (`rotation`, `cur`, `waitList`) from localStorage — they're recomputed on load to avoid restoring a stale mid-jump state after a crash. `pushLiveState()` needed its own serialization path that reads directly from the live `EVENTS` object and layers those fields back in before pushing to Supabase, so the queue view has the data it needs.
 
 ---
 
