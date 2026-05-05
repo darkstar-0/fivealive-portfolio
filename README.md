@@ -1,4 +1,5 @@
 # FiveAlive · High Jump Meet Manager
+<img width="123" height="47" alt="image" src="https://github.com/user-attachments/assets/91352823-a179-4104-b7f1-61d948322630" />
 
 FiveAlive is a browser-based tool for running high jump events at track meets. It manages jump order, attempts, bar height progression, and produces a printable scoresheet — all from a single HTML page with no install or backend required.
 
@@ -27,12 +28,14 @@ It handles:
 - **AthleticLIVE import** — pull athlete data directly from an AthleticLIVE meet URL
 - **Manual entry** — add athletes individually if needed
 - **Bar heights** — configure starting height, increment, and number of pre-loaded heights in metric or imperial
+<img width="820" height="801" alt="Import_Meet_Program" src="https://github.com/user-attachments/assets/239c5dc4-2a97-4b1d-882a-fa2aca9f6069" />
 
 ### Check-In
 - Tap cards to check athletes in or out before the event starts
 - Search by name or school; sort by bib number or alphabetically
 - Add late entries on the fly
 - See at a glance how many athletes have declared a starting height
+<img width="893" height="1072" alt="Athlete_Check_In" src="https://github.com/user-attachments/assets/4ef702cc-59d2-42c2-9440-ac3b4d819233" />
 
 ### Competition
 - Live jump queue with positional labels: UP / DECK / HOLE / HOLD / 5th / etc.
@@ -42,14 +45,23 @@ It handles:
 - Checked-out jumpers tracked in a sidebar; check them back in to re-enter the rotation
 - Undo last action via a toast notification
 - Timer counts down 2 minutes per jumper
+<img width="1221" height="853" alt="Active_Comp" src="https://github.com/user-attachments/assets/09eb5fe7-b275-404b-83fb-cf1c0ae6c5b2" />
+<img width="1217" height="834" alt="Active_Comp_Scoreboard_filling" src="https://github.com/user-attachments/assets/f67cb794-5391-44f5-94d8-4f66a735efba" />
+
 
 ### Live Scoreboard (`live.html`)
 A read-only public view that auto-refreshes every 3 seconds. Shows current height, NOW indicator, queue order, and attempt bubbles. Open it in a second browser tab on the same device and put it on a monitor or TV facing the athletes.
+
+<img width="709" height="695" alt="Live_Queue" src="https://github.com/user-attachments/assets/d9b54baf-f684-4e26-b600-2a1499119b69" />
+<img width="690" height="769" alt="Live_Scoreboard" src="https://github.com/user-attachments/assets/6da541da-92f7-4039-b1fb-7af3f82a0b93" />
+
 
 ### Results & Scoresheet
 - Final standings with places, marks, and full attempt history
 - Counts withdrawn athletes and gives them a real place in results
 - Export to PDF via jsPDF
+<img width="970" height="975" alt="Final_Results" src="https://github.com/user-attachments/assets/c765ffe9-42af-4b16-ba98-2986a38233e1" />
+
 
 ---
 
@@ -57,16 +69,8 @@ A read-only public view that auto-refreshes every 3 seconds. Shows current heigh
 
 FiveAlive is a static web app — no server, no build step, no install.
 
-### Run locally
-```
-git clone https://github.com/your-username/FiveAlive.git
-cd FiveAlive
-open index.html   # macOS
-# or just double-click index.html in Finder / Explorer
-```
-
 ### Hosted version
-Open `index.html` in any modern browser. All state is saved to `localStorage` under the key `fiveAlive_state` and survives page refreshes for 30 days.
+Works in any modern browser. All state is saved to `localStorage` under the key `fiveAlive_state` and survives page refreshes for 30 days.
 
 ### Workflow
 1. **Setup** — import athlete data (PDF, AthleticLIVE, or manual), set bar heights, click **Proceed to Check-In**
@@ -107,21 +111,14 @@ No frameworks, no bundler, no dependencies to install.
 
 ## Testing
 
-Cypress end-to-end tests cover the core competition flow. See [`CYPRESS_TESTS.md`](CYPRESS_TESTS.md) for setup and test descriptions.
+Cypress end-to-end tests cover the core competition flow.
 
-```bash
-npm install
-npx cypress open   # interactive
-npx cypress run    # headless
-```
 
 ---
 
 ## Known Limitations
 
-- The public live scoreboard (`live.html`) reads from `localStorage`, so it only works as a second tab on the **same device**. Cross-device live sharing would require a server-side state push (not yet implemented).
 - PDF import uses coordinate-based line reconstruction tuned for common meet program formats; unusual layouts may need manual cleanup after import.
-- State is stored locally only — closing the browser on a different device loses the session.
 
 ---
 
